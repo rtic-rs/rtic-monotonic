@@ -67,7 +67,7 @@ pub trait Monotonic: Clock {
     /// Optional. Commonly used for performing housekeeping of a timer when it has been extended,
     /// e.g. a 16 bit timer extended to 32/64 bits. This will be called at the end of the interrupt
     /// handler after all other operations have finished.
-    fn on_interrrupt(&mut self) {}
+    fn on_interrupt(&mut self) {}
 
     /// Optional. This is used to save power, this is called when the Monotonic interrupt is
     /// enabled.
