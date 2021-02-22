@@ -59,7 +59,7 @@ pub trait Monotonic: Clock {
     fn reset(&mut self);
 
     /// Set the compare value of the timer interrupt.
-    fn set_compare(&mut self, val: <Self as Clock>::T);
+    fn set_compare(&mut self, instant: &Instant<Self>);
 
     /// Clear the compare interrupt flag.
     fn clear_compare_flag(&mut self);
