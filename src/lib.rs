@@ -32,8 +32,7 @@ pub use embedded_time::{self, duration::*, Clock, Instant};
 /// authors should have methods in place for making sure of this, for example a flag in the timer
 /// which tracks if the `reset` method has been called yet, and if not always return `0`.
 ///
-/// `embedded_time::Instant<T>` must have its ticks be the ticks of the timer and that the
-/// `embedded_time::Clock` implementation must be infallible.
+/// The `embedded_time::Clock` implementation must be **infallible**.
 pub trait Monotonic: Clock {
     /// This tells RTIC if it should disable the interrupt bound to the monotonic if there are no
     /// scheduled tasks. One may want to set this to `false` if one is using the `on_interrupt`
