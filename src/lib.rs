@@ -40,17 +40,10 @@ pub trait Monotonic: Clock {
     /// extending a 16 bit timer to 32/64 bits, even if there are no scheduled tasks.
     const DISABLE_INTERRUPT_ON_EMPTY_QUEUE: bool = true;
 
-    /// Optionally resets the counter to *zero*.
-    ///
-    /// ## Safety
+    /// Optionally resets the counter to *zero* for a fixed baseline in a system.
     ///
     /// This method will be called *exactly once* by the RTIC runtime after `#[init]` returns and
     /// before tasks can start.
-    ///
-    /// ## Assistance to users
-    ///
-    /// To help users with not calling `try_now()`/`now()` during the `#[init]` phase, the `reset`
-    /// method can be used to also flag that the monotonic can now be used, and `panic!` before.
     ///
     /// ## Correctness
     ///
