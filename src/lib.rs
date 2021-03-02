@@ -47,8 +47,8 @@ pub trait Monotonic: Clock {
     ///
     /// ## Correctness
     ///
-    /// See correctness for the entire trait above.
-    fn reset(&mut self);
+    /// The user may not call this method.
+    unsafe fn reset(&mut self);
 
     /// Set the compare value of the timer interrupt.
     fn set_compare(&mut self, instant: &Instant<Self>);
