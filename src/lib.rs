@@ -69,4 +69,3 @@ pub trait Monotonic: Clock {
     /// disabled.
     fn disable_timer(&mut self) {}
 }
-
