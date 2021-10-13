@@ -17,4 +17,3 @@ edition = "2018"
 name = "rtic_monotonic"
 
 [dependencies]
-embedded-time = "0.12.0"

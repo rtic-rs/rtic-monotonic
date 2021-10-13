@@ -13,45 +13,61 @@
 #![deny(warnings)]
 #![no_std]
 
-pub use embedded_time::{self, duration::*, Clock, Instant};
-
 /// # A monotonic clock / counter definition.
 ///
-/// ## Codegen extensions provided
-///
-/// The RTIC codegen will implement an infallible `Monotonic::now()` that simply gets the value
-/// from the `Clock::try_now()`, and an `Monotonic::zero()` which returns the *zero* time for use
-/// in `#[init]`.
-///
+/// RTIC assumes a MonoInit implementation for setup in the #[init] task.
+/// The API is very limited.
+pub trait MonoInit {
+    /// The type for instant
+    type Instant;
+
+    /// The type for duration
+    type Duration;
+
+    /// The type for the monotonic
+    type Mono;
+
+    /// Get the current time instant.
+    /// Should return zero if `reset` is implemented for the corresponding Mono type;
+    fn now(&mut self) -> Self::Instant;
+
+    /// Called by RTIC after #[init] but before any tasks are executed.
+    /// The MonoInit implementer is turned into a Mono type (implementing the Monotonic trait)
+    fn into_mono(self) -> Self::Mono;
+}
 /// ## Correctness
 ///
 /// When implementing this trait it is important to decide if one want to have a fixed baseline and
 /// utilize the `reset` method. If not, one can implement `reset` as an empty method. If
-/// `reset` is **not empty**, it is **not allowed** for `try_now()`/`now()` to return
+/// `reset` is **not empty**, it is **not allowed** for `now()` to return
 /// nonsensical values if called before `reset` is invoked by the runtime. Therefore implementation
 /// authors should have methods in place for making sure of this, for example a flag in the timer
 /// which tracks if the `reset` method has been called yet, and if not always return `0`.
 ///
-/// The `embedded_time::Clock` implementation must be **infallible**.
-pub trait Monotonic: Clock {
+pub trait Monotonic {
     /// This tells RTIC if it should disable the interrupt bound to the monotonic if there are no
     /// scheduled tasks. One may want to set this to `false` if one is using the `on_interrupt`
     /// method to perform housekeeping and need overflow interrupts to happen, such as when
     /// extending a 16 bit timer to 32/64 bits, even if there are no scheduled tasks.
     const DISABLE_INTERRUPT_ON_EMPTY_QUEUE: bool = true;
 
+    /// The type for instant
+    type Instant;
+
+    /// The type for duration
+    type Duration;
+
     /// Optionally resets the counter to *zero* for a fixed baseline in a system.
     ///
     /// This method will be called *exactly once* by the RTIC runtime after `#[init]` returns and
     /// before tasks can start.
-    ///
-    /// ## Correctness
-    ///
-    /// The user may not call this method.
-    unsafe fn reset(&mut self);
+    fn reset(&mut self) {}
+
+    /// Get the current time instant
+    fn now(&mut self) -> Self::Instant;
 
     /// Set the compare value of the timer interrupt.
-    fn set_compare(&mut self, instant: &Instant<Self>);
+    fn set_compare(&mut self, instant: &Self::Instant);
 
     /// Clear the compare interrupt flag.
     fn clear_compare_flag(&mut self);
