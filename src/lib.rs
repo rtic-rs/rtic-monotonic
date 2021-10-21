@@ -1,7 +1,7 @@
 //! Core abstractions of the Real-Time Interrupt-driven Concurrency (RTIC) Monotonic timers, used
 //! internally for scheduling and users can use them for time.
 //!
-//! You can write generic *libraries* and HALs using the `Monotinc` trait in this crate. If you
+//! You can write generic *libraries* and HALs using the `Monotonic` trait in this crate. If you
 //! want to write application code then you'll need an *implementation* of the RTIC framework for a
 //! particular architecture. Currently, there are implementations for these architectures and OSes:
 //!
@@ -13,13 +13,15 @@
 #![deny(warnings)]
 #![no_std]
 
+// use core::cmp::Ordering;
+
 /// # A monotonic clock / counter definition.
 ///
 /// RTIC assumes a MonoInit implementation for setup in the #[init] task.
 /// The API is very limited.
 pub trait MonoInit {
     /// The type for instant
-    type Instant;
+    type Instant: Ord + Eq + Copy;
 
     /// The type for duration
     type Duration;
@@ -44,6 +46,7 @@ pub trait MonoInit {
 /// authors should have methods in place for making sure of this, for example a flag in the timer
 /// which tracks if the `reset` method has been called yet, and if not always return `0`.
 ///
+
 pub trait Monotonic {
     /// This tells RTIC if it should disable the interrupt bound to the monotonic if there are no
     /// scheduled tasks. One may want to set this to `false` if one is using the `on_interrupt`
@@ -52,7 +55,7 @@ pub trait Monotonic {
     const DISABLE_INTERRUPT_ON_EMPTY_QUEUE: bool = true;
 
     /// The type for instant
-    type Instant;
+    type Instant: Ord + Eq + Copy;
 
     /// The type for duration
     type Duration;

@@ -1,6 +1,7 @@
 [package]
 authors = [
   "The Real-Time Interrupt-driven Concurrency developers",
+  "Per Lindgren <per.lindgren@ltu.se>",
   "Emil Fresk <emil.fresk@gmail.com>",
 ]
 categories = ["concurrency", "embedded", "no-std"]
