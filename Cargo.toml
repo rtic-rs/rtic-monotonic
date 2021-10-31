@@ -10,11 +10,10 @@ keywords = []
 license = "MIT OR Apache-2.0"
 name = "rtic-monotonic"
 repository = "https://github.com/rtic-rs/rtic-monotonic"
-version = "0.1.0-rc.1"
-edition = "2018"
+version = "0.1.0-rc.2"
+edition = "2021"
 
 [lib]
 name = "rtic_monotonic"
 
 [dependencies]
-embedded-time = "0.12.0"
