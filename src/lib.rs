@@ -30,7 +30,7 @@ pub trait Monotonic {
 
     /// The type for instant, defining an instant in time.
     ///
-    /// **Note:** In all APIs in RTIC that use instants, this type will be used.
+    /// **Note:** In all APIs in RTIC that use instants from this monotonic, this type will be used.
     type Instant: Ord
         + Copy
         + Add<Self::Duration, Output = Self::Instant>
@@ -39,13 +39,16 @@ pub trait Monotonic {
 
     /// The type for duration, defining an duration of time.
     ///
-    /// **Note:** In all APIs in RTIC that use duration, this type will be used.
+    /// **Note:** In all APIs in RTIC that use duration from this monotonic, this type will be used.
     type Duration;
 
     /// Get the current time.
     fn now(&mut self) -> Self::Instant;
 
     /// Set the compare value of the timer interrupt.
+    ///
+    /// **Note:** This method does not need to handle race conditions of the monotonic, the timer
+    /// queue in RTIC checks this.
     fn set_compare(&mut self, instant: Self::Instant);
 
     /// Clear the compare interrupt flag.
