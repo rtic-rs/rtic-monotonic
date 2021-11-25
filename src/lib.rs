@@ -10,8 +10,8 @@
 #![deny(missing_docs)]
 #![deny(rust_2018_compatibility)]
 #![deny(rust_2018_idioms)]
-#![deny(warnings)]
 #![no_std]
+//deny_warnings_placeholder_for_ci
 
 use core::ops::{Add, Sub};
 
