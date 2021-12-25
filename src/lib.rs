@@ -8,6 +8,7 @@
 //! - [ARM Cortex-M](https://crates.io/crates/cortex-m-rtic)
 
 #![deny(missing_docs)]
+#![deny(rust_2021_compatibility)]
 #![deny(rust_2018_compatibility)]
 #![deny(rust_2018_idioms)]
 #![no_std]
@@ -61,6 +62,8 @@ pub trait Monotonic {
     ///
     /// This method will be called *exactly once* by the RTIC runtime after `#[init]` returns and
     /// before tasks start.
+    ///
+    /// # Safety
     ///
     /// ## Correctness
     ///
