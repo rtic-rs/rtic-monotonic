@@ -29,6 +29,9 @@ pub trait Monotonic {
     /// extending a 16 bit timer to 32/64 bits, even if there are no scheduled tasks.
     const DISABLE_INTERRUPT_ON_EMPTY_QUEUE: bool = true;
 
+    /// The time at time zero. Can be used in statics, unlike the [zero()](crate::Monotonic::zero) function.
+    const ZERO: Self::Instant;
+
     /// The type for instant, defining an instant in time.
     ///
     /// **Note:** In all APIs in RTIC that use instants from this monotonic, this type will be used.
